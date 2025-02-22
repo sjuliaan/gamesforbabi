@@ -32,7 +32,7 @@
       padding: 20px;
       border: 8px solid #ff9a9e;
       border-radius: 10px;
-      width: 90%;
+      width: 100%;
       max-width: 500px;
       text-align: center;
       image-rendering: pixelated;
@@ -515,7 +515,7 @@ function closeReward() {
 
     function moveHugCharacter(e) {
   // Prevent default behavior of arrow keys to stop screen from scrolling
-  if (['ArrowLeft', 'ArrowRight'].includes(e.key)) {
+  if (['a', 'd'].includes(e.key.toLowerCase())) {
     e.preventDefault();
   }
 
@@ -523,11 +523,11 @@ function closeReward() {
   const gameRect = document.querySelector('.hug-game').getBoundingClientRect();
   const step = 10;
 
-  if (e.key === 'ArrowLeft' && hugRect.left > gameRect.left) {
+  if (e.key.toLowerCase() === 'a' && hugRect.left > gameRect.left) {
     hugGif.style.left = `${hugGif.offsetLeft - step}px`;
     hugGif.classList.remove('inverted'); // Face right when moving left
   }
-  if (e.key === 'ArrowRight' && hugRect.right < gameRect.right) {
+  if (e.key.toLowerCase() === 'd' && hugRect.right < gameRect.right) {
     hugGif.style.left = `${hugGif.offsetLeft + step}px`;
     hugGif.classList.add('inverted'); // Face left when moving right
   }
