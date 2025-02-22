@@ -7,6 +7,11 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: 'Press Start 2P', cursive;
@@ -24,19 +29,19 @@
 
     .menu, .game-container {
       background: rgba(255, 255, 255, 0.9);
-      padding: 20px;
+      padding: 30px;
       border: 8px solid #ff9a9e;
       border-radius: 10px;
-      width: 800%;
-      max-width: 90px;
+      width: 800px; /* Larger width for laptops */
+      max-width: 90%;
       text-align: center;
       image-rendering: pixelated;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
-      font-size: 1rem;
-      margin-bottom: 20px;
+      font-size: 1.5rem; /* Larger font size */
+      margin-bottom: 30px;
       color: #ff6f91;
     }
 
@@ -45,9 +50,9 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      padding: 15px;
-      margin: 10px 0;
-      font-size: 0.75rem;
+      padding: 20px;
+      margin: 15px 0;
+      font-size: 1rem; /* Larger font size */
       border: 4px solid #f48fb1;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
       color: rgb(235, 64, 64);
@@ -64,7 +69,7 @@
     }
 
     .back-button {
-      margin-top: 20px;
+      margin-top: 30px;
       background: linear-gradient(135deg, #a18cd1, #fbc2eb);
     }
 
@@ -73,18 +78,18 @@
     }
 
     .game-screen {
-      font-size: 0.85rem;
-      padding: 20px;
+      font-size: 1rem; /* Larger font size */
+      padding: 30px;
       background: #fffaf0;
       border: 4px dashed #ff9a9e;
-      margin-top: 10px;
+      margin-top: 20px;
       image-rendering: pixelated;
     }
 
     .icon {
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
+      width: 40px; /* Larger icon size */
+      height: 40px;
+      margin-right: 15px;
       image-rendering: pixelated;
     }
 
@@ -92,20 +97,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .title-bar img {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
+      width: 50px; /* Larger icon size */
+      height: 50px;
+      margin-right: 15px;
     }
 
     /* Virtual Hug Game Styles */
     .hug-game {
       position: relative;
       width: 100%;
-      height: 300px;
+      height: 400px; /* Larger height for laptops */
       overflow: hidden;
       background: rgba(255, 182, 193, 0.3);
       border: 4px solid #ff9a9e;
@@ -114,11 +119,11 @@
 
     .hug-character {
       position: absolute;
-      bottom: 10px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 60px;
-      height: 60px;
+      width: 80px; /* Larger character size */
+      height: 80px;
       cursor: pointer;
       image-rendering: pixelated;
       transition: transform 0.2s ease;
@@ -130,9 +135,9 @@
 
     .heart {
       position: absolute;
-      top: -40px;
-      width: 30px;
-      height: 30px;
+      top: -50px;
+      width: 40px; /* Larger heart size */
+      height: 40px;
       animation: fall 3s linear forwards;
       pointer-events: none;
       image-rendering: pixelated;
@@ -140,32 +145,32 @@
 
     @keyframes fall {
       to {
-        transform: translateY(350px);
+        transform: translateY(450px); /* Adjusted for larger container */
       }
     }
 
     .score {
-      font-size: 1rem;
-      margin-top: 10px;
+      font-size: 1.2rem; /* Larger font size */
+      margin-top: 20px;
       color: #ff6f91;
     }
 
     .timer {
-      font-size: 1rem;
-      margin-top: 10px;
+      font-size: 1.2rem; /* Larger font size */
+      margin-top: 20px;
       color: #ff6f91;
     }
 
     .congrats-message {
-      font-size: 1rem;
-      margin-top: 20px;
+      font-size: 1.2rem; /* Larger font size */
+      margin-top: 30px;
       color: #ff6f91;
     }
 
     .treasure-chest {
-      width: 50px;
-      height: 50px;
-      margin-top: 20px;
+      width: 60px; /* Larger treasure chest size */
+      height: 60px;
+      margin-top: 30px;
       cursor: pointer;
       image-rendering: pixelated;
     }
@@ -175,9 +180,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 80%;
+      width: 200px; /* Larger hug animation size */
       height: auto;
-      max-width: 300px;
       z-index: 1000;
       display: none;
       image-rendering: pixelated;
@@ -201,7 +205,7 @@
 
     .reward-content {
       background: rgba(255, 255, 255, 0.95);
-      padding: 30px;
+      padding: 40px;
       border-radius: 20px;
       border: 8px solid #ff9a9e;
       text-align: center;
@@ -210,33 +214,33 @@
     }
 
     .reward-content h2 {
-      font-size: 1.5rem;
+      font-size: 2rem; /* Larger font size */
       color: #ff6f91;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .reward-content p {
-      font-size: 1rem;
+      font-size: 1.2rem; /* Larger font size */
       color: #333;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .reward-content img {
-      width: 100px;
-      height: 100px;
-      margin-bottom: 20px;
+      width: 150px; /* Larger image size */
+      height: 150px;
+      margin-bottom: 30px;
       image-rendering: pixelated;
     }
 
     .close-reward {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 15px;
+      right: 15px;
       background: #ff6f91;
       border: none;
       color: white;
-      font-size: 1rem;
-      padding: 5px 10px;
+      font-size: 1.2rem; /* Larger font size */
+      padding: 10px 15px;
       border-radius: 50%;
       cursor: pointer;
       transition: transform 0.2s ease;
@@ -279,15 +283,14 @@
     Your browser does not support the audio element.
   </audio>
 
-  <!--Win Sound Effect-->
+  <!-- Win Sound Effect -->
   <audio id="win-sound">
     <source src="win-sound.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-  <!--Reward Sound Effect-->
-  <!-- Reward Sound -->
-<audio id="reward-sound" loop>
+  <!-- Reward Sound Effect -->
+  <audio id="reward-sound" loop>
     <source src="iloveyous.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
@@ -428,78 +431,78 @@
     }
 
     function endHugGame() {
-  clearInterval(timerInterval);
-  clearInterval(heartInterval);
-  clearInterval(collisionInterval);
-  document.removeEventListener('keydown', moveHugCharacter);
+      clearInterval(timerInterval);
+      clearInterval(heartInterval);
+      clearInterval(collisionInterval);
+      document.removeEventListener('keydown', moveHugCharacter);
 
-  // Stop background music
-  backgroundMusic.pause();
-  backgroundMusic.currentTime = 0;
+      // Stop background music
+      backgroundMusic.pause();
+      backgroundMusic.currentTime = 0;
 
-  // Play winning sound
-  const winSound = document.getElementById('win-sound');
-  winSound.play();
+      // Play winning sound
+      const winSound = document.getElementById('win-sound');
+      winSound.play();
 
-  // Change character GIF to cheering GIF
-  hugGif.src = 'https://media.tenor.com/l6BNQyeZ1e8AAAAi/bits-8bits.gif'; // Replace with your cheering GIF URL
+      // Change character GIF to cheering GIF
+      hugGif.src = 'https://media.tenor.com/l6BNQyeZ1e8AAAAi/bits-8bits.gif'; // Replace with your cheering GIF URL
 
-  // Show congratulatory message and treasure chest
-  document.getElementById('final-score').textContent = score;
-  document.getElementById('congrats-message').classList.remove('hidden');
-  document.getElementById('treasure-chest').classList.remove('hidden');
+      // Show congratulatory message and treasure chest
+      document.getElementById('final-score').textContent = score;
+      document.getElementById('congrats-message').classList.remove('hidden');
+      document.getElementById('treasure-chest').classList.remove('hidden');
 
-  // Add click event to treasure chest
-  document.getElementById('treasure-chest').addEventListener('click', () => {
-    showRewardOverlay();
-  });
-}
+      // Add click event to treasure chest
+      document.getElementById('treasure-chest').addEventListener('click', () => {
+        showRewardOverlay();
+      });
+    }
 
-function showRewardOverlay() {
-  const rewardOverlay = document.createElement('div');
-  rewardOverlay.classList.add('reward-overlay');
-  rewardOverlay.innerHTML = `
-    <div class="reward-content">
-      <button class="close-reward" onclick="closeReward()">×</button>
-      <h2>🎉 Congratulations! 🎉</h2>
-      <p>You collected <span id="reward-score">${score}</span> hearts!</p>
-      <img src="https://media1.tenor.com/m/WoTDOKyEMn4AAAAC/sunday-milk-and-mocha.gif" alt="Treasure Chest" style="width: 150px; height: 150px;">
-      <p>You're amazing! Keep it up! 💖</p>
-      <p>I'm super proud of you, oat!</p>
-      <p>You deserve this hug! mwamwa ^____^</p>
-      <button class="game-button back-button" onclick="closeReward()">🔙 Back</button>
-    </div>
-  `;
+    function showRewardOverlay() {
+      const rewardOverlay = document.createElement('div');
+      rewardOverlay.classList.add('reward-overlay');
+      rewardOverlay.innerHTML = `
+        <div class="reward-content">
+          <button class="close-reward" onclick="closeReward()">×</button>
+          <h2>🎉 Congratulations! 🎉</h2>
+          <p>You collected <span id="reward-score">${score}</span> hearts!</p>
+          <img src="https://media1.tenor.com/m/WoTDOKyEMn4AAAAC/sunday-milk-and-mocha.gif" alt="Treasure Chest" style="width: 150px; height: 150px;">
+          <p>You're amazing! Keep it up! 💖</p>
+          <p>I'm super proud of you, oat!</p>
+          <p>You deserve this hug! mwamwa ^____^</p>
+          <button class="game-button back-button" onclick="closeReward()">🔙 Back</button>
+        </div>
+      `;
 
-  // Add confetti
-  for (let i = 0; i < 50; i++) {
-    const confetti = document.createElement('div');
-    confetti.classList.add('confetti');
-    confetti.style.left = `${Math.random() * 100}vw`;
-    confetti.style.animationDelay = `${Math.random() * 2}s`;
-    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
-    rewardOverlay.appendChild(confetti);
-  }
+      // Add confetti
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        rewardOverlay.appendChild(confetti);
+      }
 
-  document.body.appendChild(rewardOverlay);
-  rewardOverlay.style.display = 'flex';
+      document.body.appendChild(rewardOverlay);
+      rewardOverlay.style.display = 'flex';
 
-  // Play reward sound
-  const rewardSound = document.getElementById('reward-sound');
-  rewardSound.play();
-}
+      // Play reward sound
+      const rewardSound = document.getElementById('reward-sound');
+      rewardSound.play();
+    }
 
-function closeReward() {
-  const rewardOverlay = document.querySelector('.reward-overlay');
-  if (rewardOverlay) {
-    rewardOverlay.remove();
-  }
+    function closeReward() {
+      const rewardOverlay = document.querySelector('.reward-overlay');
+      if (rewardOverlay) {
+        rewardOverlay.remove();
+      }
 
-  // Stop reward sound
-  const rewardSound = document.getElementById('reward-sound');
-  rewardSound.pause();
-  rewardSound.currentTime = 0;
-}
+      // Stop reward sound
+      const rewardSound = document.getElementById('reward-sound');
+      rewardSound.pause();
+      rewardSound.currentTime = 0;
+    }
 
     function resetHugGame() {
       clearInterval(timerInterval);
