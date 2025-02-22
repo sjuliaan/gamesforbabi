@@ -21,7 +21,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       color: #333;
       image-rendering: pixelated;
       touch-action: manipulation; /* Disable double-tap zoom */
@@ -269,6 +269,52 @@
         transform: translateY(100vh) rotate(360deg);
       }
     }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 0.8rem;
+      }
+
+      .game-button {
+        font-size: 0.7rem;
+        padding: 10px;
+      }
+
+      .game-screen {
+        font-size: 0.75rem;
+      }
+
+      .hug-game {
+        height: 200px;
+      }
+
+      .hug-character {
+        width: 50px;
+        height: 50px;
+      }
+
+      .heart {
+        width: 25px;
+        height: 25px;
+      }
+
+      .score, .timer {
+        font-size: 0.9rem;
+      }
+
+      .congrats-message {
+        font-size: 0.9rem;
+      }
+
+      .reward-content h2 {
+        font-size: 1.2rem;
+      }
+
+      .reward-content p {
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -291,8 +337,7 @@
   </audio>
 
   <!--Reward Sound Effect-->
-  <!-- Reward Sound -->
-<audio id="reward-sound" loop>
+  <audio id="reward-sound" loop>
     <source src="iloveyous.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
@@ -433,78 +478,78 @@
     }
 
     function endHugGame() {
-  clearInterval(timerInterval);
-  clearInterval(heartInterval);
-  clearInterval(collisionInterval);
-  document.removeEventListener('keydown', moveHugCharacter);
+      clearInterval(timerInterval);
+      clearInterval(heartInterval);
+      clearInterval(collisionInterval);
+      document.removeEventListener('keydown', moveHugCharacter);
 
-  // Stop background music
-  backgroundMusic.pause();
-  backgroundMusic.currentTime = 0;
+      // Stop background music
+      backgroundMusic.pause();
+      backgroundMusic.currentTime = 0;
 
-  // Play winning sound
-  const winSound = document.getElementById('win-sound');
-  winSound.play();
+      // Play winning sound
+      const winSound = document.getElementById('win-sound');
+      winSound.play();
 
-  // Change character GIF to cheering GIF
-  hugGif.src = 'https://media.tenor.com/l6BNQyeZ1e8AAAAi/bits-8bits.gif'; // Replace with your cheering GIF URL
+      // Change character GIF to cheering GIF
+      hugGif.src = 'https://media.tenor.com/l6BNQyeZ1e8AAAAi/bits-8bits.gif'; // Replace with your cheering GIF URL
 
-  // Show congratulatory message and treasure chest
-  document.getElementById('final-score').textContent = score;
-  document.getElementById('congrats-message').classList.remove('hidden');
-  document.getElementById('treasure-chest').classList.remove('hidden');
+      // Show congratulatory message and treasure chest
+      document.getElementById('final-score').textContent = score;
+      document.getElementById('congrats-message').classList.remove('hidden');
+      document.getElementById('treasure-chest').classList.remove('hidden');
 
-  // Add click event to treasure chest
-  document.getElementById('treasure-chest').addEventListener('click', () => {
-    showRewardOverlay();
-  });
-}
+      // Add click event to treasure chest
+      document.getElementById('treasure-chest').addEventListener('click', () => {
+        showRewardOverlay();
+      });
+    }
 
-function showRewardOverlay() {
-  const rewardOverlay = document.createElement('div');
-  rewardOverlay.classList.add('reward-overlay');
-  rewardOverlay.innerHTML = `
-    <div class="reward-content">
-      <button class="close-reward" onclick="closeReward()">×</button>
-      <h2>🎉 Congratulations! 🎉</h2>
-      <p>You collected <span id="reward-score">${score}</span> hearts!</p>
-      <img src="https://media1.tenor.com/m/WoTDOKyEMn4AAAAC/sunday-milk-and-mocha.gif" alt="Treasure Chest" style="width: 150px; height: 150px;">
-      <p>You're amazing! Keep it up! 💖</p>
-      <p>I'm super proud of you, oat!</p>
-      <p>You deserve this hug! mwamwa ^____^</p>
-      <button class="game-button back-button" onclick="closeReward()">🔙 Back</button>
-    </div>
-  `;
+    function showRewardOverlay() {
+      const rewardOverlay = document.createElement('div');
+      rewardOverlay.classList.add('reward-overlay');
+      rewardOverlay.innerHTML = `
+        <div class="reward-content">
+          <button class="close-reward" onclick="closeReward()">×</button>
+          <h2>🎉 Congratulations! 🎉</h2>
+          <p>You collected <span id="reward-score">${score}</span> hearts!</p>
+          <img src="https://media1.tenor.com/m/WoTDOKyEMn4AAAAC/sunday-milk-and-mocha.gif" alt="Treasure Chest" style="width: 150px; height: 150px;">
+          <p>You're amazing! Keep it up! 💖</p>
+          <p>I'm super proud of you, oat!</p>
+          <p>You deserve this hug! mwamwa ^____^</p>
+          <button class="game-button back-button" onclick="closeReward()">🔙 Back</button>
+        </div>
+      `;
 
-  // Add confetti
-  for (let i = 0; i < 50; i++) {
-    const confetti = document.createElement('div');
-    confetti.classList.add('confetti');
-    confetti.style.left = `${Math.random() * 100}vw`;
-    confetti.style.animationDelay = `${Math.random() * 2}s`;
-    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
-    rewardOverlay.appendChild(confetti);
-  }
+      // Add confetti
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        rewardOverlay.appendChild(confetti);
+      }
 
-  document.body.appendChild(rewardOverlay);
-  rewardOverlay.style.display = 'flex';
+      document.body.appendChild(rewardOverlay);
+      rewardOverlay.style.display = 'flex';
 
-  // Play reward sound
-  const rewardSound = document.getElementById('reward-sound');
-  rewardSound.play();
-}
+      // Play reward sound
+      const rewardSound = document.getElementById('reward-sound');
+      rewardSound.play();
+    }
 
-function closeReward() {
-  const rewardOverlay = document.querySelector('.reward-overlay');
-  if (rewardOverlay) {
-    rewardOverlay.remove();
-  }
+    function closeReward() {
+      const rewardOverlay = document.querySelector('.reward-overlay');
+      if (rewardOverlay) {
+        rewardOverlay.remove();
+      }
 
-  // Stop reward sound
-  const rewardSound = document.getElementById('reward-sound');
-  rewardSound.pause();
-  rewardSound.currentTime = 0;
-}
+      // Stop reward sound
+      const rewardSound = document.getElementById('reward-sound');
+      rewardSound.pause();
+      rewardSound.currentTime = 0;
+    }
 
     function resetHugGame() {
       clearInterval(timerInterval);
