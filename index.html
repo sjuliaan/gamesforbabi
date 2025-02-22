@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Comfort Games for Babiiii</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Press Start 2P', cursive;
+      background: url('nVVaZgV.jpg'); /* Placeholder background */
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #333;
+      image-rendering: pixelated;
+      touch-action: manipulation; /* Disable double-tap zoom */
+    }
+
+    .menu, .game-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border: 8px solid #ff9a9e;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      image-rendering: pixelated;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      color: #ff6f91;
+    }
+
+    .game-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      font-size: 0.75rem;
+      border: 4px solid #f48fb1;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      color: rgb(235, 64, 64);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      image-rendering: pixelated;
+      text-shadow: 2px 2px #ffb6c1;
+      -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+      font-family: 'Press Start 2P', cursive; /* Set font for buttons */
+    }
+
+    .game-button:hover {
+      transform: scale(1.1);
+    }
+
+    .back-button {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .game-screen {
+      font-size: 0.85rem;
+      padding: 20px;
+      background: #fffaf0;
+      border: 4px dashed #ff9a9e;
+      margin-top: 10px;
+      image-rendering: pixelated;
+    }
+
+    .icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      image-rendering: pixelated;
+    }
+
+    .title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .title-bar img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    /* Virtual Hug Game Styles */
+    .hug-game {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      background: rgba(255, 182, 193, 0.3);
+      border: 4px solid #ff9a9e;
+      border-radius: 10px;
+    }
+
+    .hug-character {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      image-rendering: pixelated;
+      transition: transform 0.2s ease;
+    }
+
+    .hug-character.inverted {
+      transform: translateX(-50%) scaleX(-1); /* Flip horizontally */
+    }
+
+    .heart {
+      position: absolute;
+      top: -40px;
+      width: 30px;
+      height: 30px;
+      animation: fall 3s linear forwards;
+      pointer-events: none;
+      image-rendering: pixelated;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(350px);
+      }
+    }
+
+    .score {
+      font-size: 1rem;
+      margin-top: 10px;
+      color: #ff6f91;
+    }
+
+    .timer {
+      font-size: 1rem;
+      margin-top: 10px;
+      color: #ff6f91;
+    }
+
+    .congrats-message {
+      font-size: 1rem;
+      margin-top: 20px;
+      color: #ff6f91;
+    }
+
+    .treasure-chest {
+      width: 50px;
+      height: 50px;
+      margin-top: 20px;
+      cursor: pointer;
+      image-rendering: pixelated;
+    }
+
+    .hug-animation {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: auto;
+      max-width: 300px;
+      z-index: 1000;
+      display: none;
+      image-rendering: pixelated;
+      pointer-events: none;
+    }
+
+    /* Reward Overlay Styles */
+    .reward-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 182, 193, 0.9); /* Soft pink background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      display: none;
+    }
+
+    .reward-content {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      border: 8px solid #ff9a9e;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .reward-content h2 {
+      font-size: 1.5rem;
+      color: #ff6f91;
+      margin-bottom: 20px;
+    }
+
+    .reward-content p {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .reward-content img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+      image-rendering: pixelated;
+    }
+
+    .close-reward {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff6f91;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      padding: 5px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .close-reward:hover {
+      transform: scale(1.1);
+    }
+
+    /* Confetti Animation */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #ff6f91;
+      animation: confetti-fall 3s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Music -->
+  <audio id="background-music" loop>
+    <source src="background-music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Heart Sound Effect -->
+  <audio id="heart-sound">
+    <source src="heart-sound.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!--Win Sound Effect-->
+  <audio id="win-sound">
+    <source src="win-sound.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!--Reward Sound Effect-->
+  <!-- Reward Sound -->
+<audio id="reward-sound" loop>
+    <source src="iloveyous.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="menu" id="menu">
+    <div class="title-bar">
+      <img src="love.gif" alt="Heart Icon" class="icon">
+      <h1>🎮 Pick a game! ^^</h1>
+    </div>
+    <button class="game-button" onclick="showGame('hug')">
+      <img src="https://media.tenor.com/mbxuu-q8vcwAAAAm/hamster-hamtaro.gif" alt="Hug Icon" class="icon">Virtual Hug Game
+    </button>
+    <button class="game-button" onclick="showGame('pop')">
+      <img src="https://media.tenor.com/rqe3mA_nLu8AAAAi/bits-8bits.gif" alt="Pop Icon" class="icon">Coming soon pa to hehe
+    </button>
+    <button class="game-button" onclick="showGame('notes')">
+      <img src="https://media.tenor.com/ZZu2QC-efdUAAAAi/cute-cat-white.gif" alt="Notes Icon" class="icon">pati i2
+    </button>
+    <button class="game-button" onclick="showGame('pet')">
+      <img src="https://media.tenor.com/mOI3PFaz96UAAAAm/fire-being-fire.webp" alt="Pet Icon" class="icon">and this mwehehe
+    </button>
+  </div>
+
+  <div class="game-container hidden" id="hug-game">
+    <div class="game-screen">
+      <div class="hug-game">
+        <img src="https://media.tenor.com/IR-B2_ZcBDUAAAAi/bits-8bits.gif" alt="Hug GIF" class="hug-character" id="hug-gif">
+      </div>
+      <div class="score">Hearts Collected: <span id="score">0</span></div>
+      <div class="timer">Time Left: <span id="timer">30</span>s</div>
+      <div class="congrats-message hidden" id="congrats-message">
+        Congratulations! You collected <span id="final-score">0</span> hearts! 🎉
+        <img src="Next_Idle.png" alt="Treasure Chest" class="treasure-chest hidden" id="treasure-chest">
+      </div>
+      <img src="https://i.pinimg.com/originals/43/f1/4c/43f14c7ea691e7bd664ec3c843570b66.gif" alt="Hug Animation" class="hug-animation" id="hug-animation">
+    </div>
+    <button class="game-button back-button" onclick="goBack()">🔙 Back</button>
+  </div>
+
+  <div class="game-container hidden" id="pop-game">
+    <div class="game-screen">blehh coming soon sabi sau e :P</div>
+    <button class="game-button back-button" onclick="goBack()">🔙 Back</button>
+  </div>
+
+  <div class="game-container hidden" id="notes-game">
+    <div class="game-screen">blehh coming soon sabi sau e :P</div>
+    <button class="game-button back-button" onclick="goBack()">🔙 Back</button>
+  </div>
+
+  <div class="game-container hidden" id="pet-game">
+    <div class="game-screen">blehh coming soon sabi sau e :P</div>
+    <button class="game-button back-button" onclick="goBack()">🔙 Back</button>
+  </div>
+
+  <script>
+    let score = 0;
+    let timeLeft = 30;
+    let timerInterval;
+    let heartInterval;
+    let collisionInterval;
+    let hugGif;
+
+    // Audio elements
+    const backgroundMusic = document.getElementById('background-music');
+    const heartSound = document.getElementById('heart-sound');
+
+    function showGame(game) {
+      document.getElementById('menu').classList.add('hidden');
+      document.getElementById(`${game}-game`).classList.remove('hidden');
+
+      if (game === 'hug') {
+        startHugGame();
+      }
+    }
+
+    function goBack() {
+      document.querySelectorAll('.game-container').forEach(container => container.classList.add('hidden'));
+      document.getElementById('menu').classList.remove('hidden');
+      resetHugGame();
+    }
+
+    function startHugGame() {
+      score = 0;
+      timeLeft = 30;
+      document.getElementById('score').textContent = score;
+      document.getElementById('timer').textContent = timeLeft;
+      document.getElementById('congrats-message').classList.add('hidden');
+      document.getElementById('treasure-chest').classList.add('hidden');
+      document.getElementById('hug-animation').style.display = 'none';
+
+      // Play background music
+      backgroundMusic.play();
+
+      hugGif = document.getElementById('hug-gif');
+      hugGif.src = 'https://media.tenor.com/IR-B2_ZcBDUAAAAi/bits-8bits.gif'; // Reset to original GIF
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          endHugGame();
+        }
+      }, 1000);
+
+      heartInterval = setInterval(() => {
+        const heart = document.createElement('img');
+        heart.classList.add('heart');
+        heart.src = 'https://media.tenor.com/wnVuzMq9fYsAAAAi/love-heart.gif'; // Replace with your custom GIF URL
+        heart.style.left = `${Math.random() * 90}%`;
+        document.querySelector('.hug-game').appendChild(heart);
+
+        // Play heart sound effect
+        heartSound.play();
+
+        setTimeout(() => heart.remove(), 3500);
+      }, 1000);
+
+      collisionInterval = setInterval(() => {
+        document.querySelectorAll('.heart').forEach(heart => {
+          const hugRect = hugGif.getBoundingClientRect();
+          const heartRect = heart.getBoundingClientRect();
+
+          if (
+            heartRect.left < hugRect.right &&
+            heartRect.right > hugRect.left &&
+            heartRect.bottom > hugRect.top &&
+            heartRect.top < hugRect.bottom
+          ) {
+            heart.remove();
+            score++;
+            document.getElementById('score').textContent = score;
+          }
+        });
+      }, 100);
+
+      document.addEventListener('keydown', moveHugCharacter);
+    }
+
+    function endHugGame() {
+  clearInterval(timerInterval);
+  clearInterval(heartInterval);
+  clearInterval(collisionInterval);
+  document.removeEventListener('keydown', moveHugCharacter);
+
+  // Stop background music
+  backgroundMusic.pause();
+  backgroundMusic.currentTime = 0;
+
+  // Play winning sound
+  const winSound = document.getElementById('win-sound');
+  winSound.play();
+
+  // Change character GIF to cheering GIF
+  hugGif.src = 'https://media.tenor.com/l6BNQyeZ1e8AAAAi/bits-8bits.gif'; // Replace with your cheering GIF URL
+
+  // Show congratulatory message and treasure chest
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('congrats-message').classList.remove('hidden');
+  document.getElementById('treasure-chest').classList.remove('hidden');
+
+  // Add click event to treasure chest
+  document.getElementById('treasure-chest').addEventListener('click', () => {
+    showRewardOverlay();
+  });
+}
+
+function showRewardOverlay() {
+  const rewardOverlay = document.createElement('div');
+  rewardOverlay.classList.add('reward-overlay');
+  rewardOverlay.innerHTML = `
+    <div class="reward-content">
+      <button class="close-reward" onclick="closeReward()">×</button>
+      <h2>🎉 Congratulations! 🎉</h2>
+      <p>You collected <span id="reward-score">${score}</span> hearts!</p>
+      <img src="https://media1.tenor.com/m/WoTDOKyEMn4AAAAC/sunday-milk-and-mocha.gif" alt="Treasure Chest" style="width: 150px; height: 150px;">
+      <p>You're amazing! Keep it up! 💖</p>
+      <p>I'm super proud of you, oat!</p>
+      <p>You deserve this hug! mwamwa ^____^</p>
+      <button class="game-button back-button" onclick="closeReward()">🔙 Back</button>
+    </div>
+  `;
+
+  // Add confetti
+  for (let i = 0; i < 50; i++) {
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti');
+    confetti.style.left = `${Math.random() * 100}vw`;
+    confetti.style.animationDelay = `${Math.random() * 2}s`;
+    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+    rewardOverlay.appendChild(confetti);
+  }
+
+  document.body.appendChild(rewardOverlay);
+  rewardOverlay.style.display = 'flex';
+
+  // Play reward sound
+  const rewardSound = document.getElementById('reward-sound');
+  rewardSound.play();
+}
+
+function closeReward() {
+  const rewardOverlay = document.querySelector('.reward-overlay');
+  if (rewardOverlay) {
+    rewardOverlay.remove();
+  }
+
+  // Stop reward sound
+  const rewardSound = document.getElementById('reward-sound');
+  rewardSound.pause();
+  rewardSound.currentTime = 0;
+}
+
+    function resetHugGame() {
+      clearInterval(timerInterval);
+      clearInterval(heartInterval);
+      clearInterval(collisionInterval);
+      document.querySelectorAll('.heart').forEach(heart => heart.remove());
+    }
+
+    function moveHugCharacter(e) {
+      const hugRect = hugGif.getBoundingClientRect();
+      const gameRect = document.querySelector('.hug-game').getBoundingClientRect();
+      const step = 10;
+
+      if (e.key === 'ArrowLeft' && hugRect.left > gameRect.left) {
+        hugGif.style.left = `${hugGif.offsetLeft - step}px`;
+        hugGif.classList.remove('inverted'); // Face right when moving left
+      }
+      if (e.key === 'ArrowRight' && hugRect.right < gameRect.right) {
+        hugGif.style.left = `${hugGif.offsetLeft + step}px`;
+        hugGif.classList.add('inverted'); // Face left when moving right
+      }
+    }
+  </script>
+</body>
+</html>
