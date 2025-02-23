@@ -60,7 +60,6 @@
       transition: transform 0.2s ease;
       image-rendering: pixelated;
       text-shadow: 2px 2px #ffb6c1;
-      -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
       font-family: 'Press Start 2P', cursive; /* Set font for buttons */
     }
 
@@ -269,6 +268,36 @@
         transform: translateY(100vh) rotate(360deg);
       }
     }
+
+    /* On-Screen Buttons for Mobile */
+    .mobile-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      display: none; /* Hidden by default */
+    }
+
+    .mobile-controls button {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      background: rgba(255, 182, 193, 0.7);
+      border: 4px solid #ff9a9e;
+      border-radius: 10px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-controls button:active {
+      background: rgba(255, 182, 193, 1);
+    }
+
+    /* Show mobile controls only on touch devices */
+    @media (hover: none) and (pointer: coarse) {
+      .mobile-controls {
+        display: flex;
+      }
+    }
   </style>
 </head>
 <body>
@@ -291,8 +320,7 @@
   </audio>
 
   <!--Reward Sound Effect-->
-  <!-- Reward Sound -->
-<audio id="reward-sound" loop>
+  <audio id="reward-sound" loop>
     <source src="iloveyous.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
@@ -329,6 +357,11 @@
       </div>
       <img src="https://i.pinimg.com/originals/43/f1/4c/43f14c7ea691e7bd664ec3c843570b66.gif" alt="Hug Animation" class="hug-animation" id="hug-animation">
     </div>
+    <!-- Mobile Controls -->
+    <div class="mobile-controls">
+      <button onpointerdown="moveLeft()" onpointerup="stopMove()">←</button>
+      <button onpointerdown="moveRight()" onpointerup="stopMove()">→</button>
+    </div>
     <button class="game-button back-button" onclick="goBack()">🔙 Back</button>
   </div>
 
@@ -354,6 +387,8 @@
     let heartInterval;
     let collisionInterval;
     let hugGif;
+    let isMovingLeft = false;
+    let isMovingRight = false;
 
     // Audio elements
     const backgroundMusic = document.getElementById('background-music');
@@ -433,78 +468,78 @@
     }
 
     function endHugGame() {
-  clearInterval(timerInterval);
-  clearInterval(heartInterval);
-  clearInterval(collisionInterval);
-  document.removeEventListener('keydown', moveHugCharacter);
+      clearInterval(timerInterval);
+      clearInterval(heartInterval);
+      clearInterval(collisionInterval);
+      document.removeEventListener('keydown', moveHugCharacter);
 
-  // Stop background music
-  backgroundMusic.pause();
-  backgroundMusic.currentTime = 0;
+      // Stop background music
+      backgroundMusic.pause();
+      backgroundMusic.currentTime = 0;
 
-  // Play winning sound
-  const winSound = document.getElementById('win-sound');
-  winSound.play();
+      // Play winning sound
+      const winSound = document.getElementById('win-sound');
+      winSound.play();
 
-  // Change character GIF to cheering GIF
-  hugGif.src = 'https://media.tenor.com/l6BNQyeZ1e8AAAAi/bits-8bits.gif'; // Replace with your cheering GIF URL
+      // Change character GIF to cheering GIF
+      hugGif.src = 'https://media.tenor.com/l6BNQyeZ1e8AAAAi/bits-8bits.gif'; // Replace with your cheering GIF URL
 
-  // Show congratulatory message and treasure chest
-  document.getElementById('final-score').textContent = score;
-  document.getElementById('congrats-message').classList.remove('hidden');
-  document.getElementById('treasure-chest').classList.remove('hidden');
+      // Show congratulatory message and treasure chest
+      document.getElementById('final-score').textContent = score;
+      document.getElementById('congrats-message').classList.remove('hidden');
+      document.getElementById('treasure-chest').classList.remove('hidden');
 
-  // Add click event to treasure chest
-  document.getElementById('treasure-chest').addEventListener('click', () => {
-    showRewardOverlay();
-  });
-}
+      // Add click event to treasure chest
+      document.getElementById('treasure-chest').addEventListener('click', () => {
+        showRewardOverlay();
+      });
+    }
 
-function showRewardOverlay() {
-  const rewardOverlay = document.createElement('div');
-  rewardOverlay.classList.add('reward-overlay');
-  rewardOverlay.innerHTML = `
-    <div class="reward-content">
-      <button class="close-reward" onclick="closeReward()">×</button>
-      <h2>🎉 Congratulations! 🎉</h2>
-      <p>You collected <span id="reward-score">${score}</span> hearts!</p>
-      <img src="https://media1.tenor.com/m/WoTDOKyEMn4AAAAC/sunday-milk-and-mocha.gif" alt="Treasure Chest" style="width: 150px; height: 150px;">
-      <p>You're amazing! Keep it up! 💖</p>
-      <p>I'm super proud of you, oat!</p>
-      <p>You deserve this hug! mwamwa ^____^</p>
-      <button class="game-button back-button" onclick="closeReward()">🔙 Back</button>
-    </div>
-  `;
+    function showRewardOverlay() {
+      const rewardOverlay = document.createElement('div');
+      rewardOverlay.classList.add('reward-overlay');
+      rewardOverlay.innerHTML = `
+        <div class="reward-content">
+          <button class="close-reward" onclick="closeReward()">×</button>
+          <h2>🎉 Congratulations! 🎉</h2>
+          <p>You collected <span id="reward-score">${score}</span> hearts!</p>
+          <img src="https://media1.tenor.com/m/WoTDOKyEMn4AAAAC/sunday-milk-and-mocha.gif" alt="Treasure Chest" style="width: 150px; height: 150px;">
+          <p>You're amazing! Keep it up! 💖</p>
+          <p>I'm super proud of you, oat!</p>
+          <p>You deserve this hug! mwamwa ^____^</p>
+          <button class="game-button back-button" onclick="closeReward()">🔙 Back</button>
+        </div>
+      `;
 
-  // Add confetti
-  for (let i = 0; i < 50; i++) {
-    const confetti = document.createElement('div');
-    confetti.classList.add('confetti');
-    confetti.style.left = `${Math.random() * 100}vw`;
-    confetti.style.animationDelay = `${Math.random() * 2}s`;
-    confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
-    rewardOverlay.appendChild(confetti);
-  }
+      // Add confetti
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        rewardOverlay.appendChild(confetti);
+      }
 
-  document.body.appendChild(rewardOverlay);
-  rewardOverlay.style.display = 'flex';
+      document.body.appendChild(rewardOverlay);
+      rewardOverlay.style.display = 'flex';
 
-  // Play reward sound
-  const rewardSound = document.getElementById('reward-sound');
-  rewardSound.play();
-}
+      // Play reward sound
+      const rewardSound = document.getElementById('reward-sound');
+      rewardSound.play();
+    }
 
-function closeReward() {
-  const rewardOverlay = document.querySelector('.reward-overlay');
-  if (rewardOverlay) {
-    rewardOverlay.remove();
-  }
+    function closeReward() {
+      const rewardOverlay = document.querySelector('.reward-overlay');
+      if (rewardOverlay) {
+        rewardOverlay.remove();
+      }
 
-  // Stop reward sound
-  const rewardSound = document.getElementById('reward-sound');
-  rewardSound.pause();
-  rewardSound.currentTime = 0;
-}
+      // Stop reward sound
+      const rewardSound = document.getElementById('reward-sound');
+      rewardSound.pause();
+      rewardSound.currentTime = 0;
+    }
 
     function resetHugGame() {
       clearInterval(timerInterval);
@@ -514,24 +549,59 @@ function closeReward() {
     }
 
     function moveHugCharacter(e) {
-  // Prevent default behavior of arrow keys to stop screen from scrolling
-  if (['a', 'd'].includes(e.key.toLowerCase())) {
-    e.preventDefault();
-  }
+      // Prevent default behavior of arrow keys to stop screen from scrolling
+      if (['a', 'd'].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+      }
 
-  const hugRect = hugGif.getBoundingClientRect();
-  const gameRect = document.querySelector('.hug-game').getBoundingClientRect();
-  const step = 10;
+      const hugRect = hugGif.getBoundingClientRect();
+      const gameRect = document.querySelector('.hug-game').getBoundingClientRect();
+      const step = 10;
 
-  if (e.key.toLowerCase() === 'a' && hugRect.left > gameRect.left) {
-    hugGif.style.left = `${hugGif.offsetLeft - step}px`;
-    hugGif.classList.remove('inverted'); // Face right when moving left
-  }
-  if (e.key.toLowerCase() === 'd' && hugRect.right < gameRect.right) {
-    hugGif.style.left = `${hugGif.offsetLeft + step}px`;
-    hugGif.classList.add('inverted'); // Face left when moving right
-  }
-}
+      if (e.key.toLowerCase() === 'a' && hugRect.left > gameRect.left) {
+        hugGif.style.left = `${hugGif.offsetLeft - step}px`;
+        hugGif.classList.remove('inverted'); // Face right when moving left
+      }
+      if (e.key.toLowerCase() === 'd' && hugRect.right < gameRect.right) {
+        hugGif.style.left = `${hugGif.offsetLeft + step}px`;
+        hugGif.classList.add('inverted'); // Face left when moving right
+      }
+    }
+
+    // Mobile Controls
+    function moveLeft() {
+      isMovingLeft = true;
+      moveCharacter();
+    }
+
+    function moveRight() {
+      isMovingRight = true;
+      moveCharacter();
+    }
+
+    function stopMove() {
+      isMovingLeft = false;
+      isMovingRight = false;
+    }
+
+    function moveCharacter() {
+      const hugRect = hugGif.getBoundingClientRect();
+      const gameRect = document.querySelector('.hug-game').getBoundingClientRect();
+      const step = 10;
+
+      if (isMovingLeft && hugRect.left > gameRect.left) {
+        hugGif.style.left = `${hugGif.offsetLeft - step}px`;
+        hugGif.classList.remove('inverted'); // Face right when moving left
+      }
+      if (isMovingRight && hugRect.right < gameRect.right) {
+        hugGif.style.left = `${hugGif.offsetLeft + step}px`;
+        hugGif.classList.add('inverted'); // Face left when moving right
+      }
+
+      if (isMovingLeft || isMovingRight) {
+        requestAnimationFrame(moveCharacter);
+      }
+    }
   </script>
 </body>
 </html>
